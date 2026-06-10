@@ -96,6 +96,59 @@ API notes.md                             FILE               8421  2026-06-01 15:
 Integration test report.pdf              FILE            1452284  2026-06-03 11:08:57   01GHI...
 ```
 
+## Recruiter demo
+
+If you want to demo this repo live, use this story:
+
+> I had browser access to shared Microsoft 365 content, but no practical way to turn that into programmable access because I did not control the tenant, app registration, or token flow. I used AI to accelerate investigation, found a workable Graph path through delegated auth plus shared-link resolution, and turned it into a reusable CLI.
+
+### 60-second demo flow
+
+```powershell
+# 1. Authenticate once
+python auth.py
+
+# 2. Cache the shared link when normal API onboarding is blocked
+python onedrive.py link "https://tenant.sharepoint.com/:f:/g/..."
+
+# 3. Show that the shared folder is now programmable
+python onedrive.py list
+
+# 4. Show search
+python onedrive.py search "meeting"
+
+# 5. Show download capability
+python onedrive.py download <item-id> .\downloads
+```
+
+### Sanitized demo transcript
+
+```text
+> python onedrive.py link "https://tenant.sharepoint.com/:f:/g/..."
+Cached shared link: Shared Engineering Folder
+
+> python onedrive.py list
+Name                                     Type               Size             Modified   ID
+--------------------------------------------------------------------------------------------------------------
+Architecture                             FOLDER                0  2026-05-30 09:14:22   01ABC...
+Meeting notes.docx                       FILE              18244  2026-06-02 11:20:04   01DEF...
+Integration status.xlsx                  FILE              25412  2026-06-03 08:15:31   01GHI...
+
+> python onedrive.py search "meeting"
+Results for 'meeting':
+  /Meeting notes.docx
+    ID: 01DEF...  |  Modified: 2026-06-02T11:20:04
+
+> python onedrive.py download 01DEF... .\downloads
+Downloaded: .\downloads\Meeting notes.docx  (18,244 bytes)
+```
+
+### What to emphasize while demoing
+
+1. **The problem was access orchestration, not just coding.**
+2. **The solution was to bridge browser-only access into automation.**
+3. **AI helped speed up investigation and iteration, but the value was shipping a reusable workflow.**
+
 ## Using it from Python
 
 ```python
